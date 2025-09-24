@@ -1,4 +1,4 @@
-resource "aws_ecs_cluster" "strapi_cluster" {
+resource "aws_ecs_cluster" "sairam_strapi_cluster" {
 awslogs-region = var.aws_region
 awslogs-stream-prefix = "strapi"
 }
