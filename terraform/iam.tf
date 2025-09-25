@@ -1,29 +1,33 @@
-# Task execution role (allows pulling from ECR and writing logs)
+resource "aws_ecs_cluster" "ECS" {
+  name = "sairam-ECS"
+
+  tags = {
+    Name = "sairam-ECS"
+  }
+}
+[root@ip-172-31-37-214 terraform]# cat iam.tf.bak
 resource "aws_iam_role" "ecs_task_execution_role" {
-name = "ecsTaskExecutionRole-${var.env}"
-assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
+  name               = "sairam-execution-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
 }
 
-
-data "aws_iam_policy_document" "ecs_task_assume_role" {
-statement {
-actions = ["sts:AssumeRole"]
-principals {
-type = "Service"
-identifiers = ["ecs-tasks.amazonaws.com"]
-}
-}
+resource "aws_iam_role" "ecs_task_role" {
+  name               = "sairam-task-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
 }
 
+data "aws_iam_policy_document" "ecs_task_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
-role = aws_iam_role.ecs_task_execution_role.name
-policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-
-# Task role (for application permissions if needed)
-resource "aws_iam_role" "ecs_task_role" {
-name = "ecsTaskRole-${var.env}"
-assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role.json
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
