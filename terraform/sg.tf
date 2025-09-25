@@ -18,6 +18,6 @@ resource "aws_security_group" "SG" {
   }
 
   tags = {
-    Name = "sairam-SG"
+    Name = "SG"
   }
 }
