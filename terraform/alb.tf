@@ -1,43 +1,22 @@
-resource "aws_lb" "alb" {
-name = "strapi-alb-${var.env}"
-internal = false
-load_balancer_type = "application"
-security_groups = [aws_security_group.alb_sg.id]
-subnets = local.public_subnet_ids
+resource "aws_lb" "LB" {
+  name               = "LB"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.SG.id]
+  subnets            = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
+
+  tags = {
+    Name = "sairam-LB"
+  }
 }
 
+resource "aws_alb_listener" "Listener" {
+  load_balancer_arn = aws_lb.LB.id
+  port              = "80"
+  protocol          = "HTTP"
 
-resource "aws_lb_target_group" "tg" {
-name = "tg-strapi-${var.env}"
-port = var.container_port
-protocol = "HTTP"
-vpc_id = data.aws_vpc.default.id
-
-
-health_check {
-path = "/"
-matcher = "200-399"
-interval = 30
-timeout = 5
-healthy_threshold = 2
-unhealthy_threshold = 2
-}
-}
-
-
-resource "aws_lb_listener" "http_listener" {
-load_balancer_arn = aws_lb.alb.arn
-port = "80"
-protocol = "HTTP"
-
-
-default_action {
-type = "forward"
-target_group_arn = aws_lb_target_group.tg.arn
-}
-}
-
-
-output "alb_dns_name" {
-value = aws_lb.alb.dns_name
+  default_action {
+    target_group_arn = aws_lb_target_group.TG.id
+    type             = "forward"
+  }
 }
