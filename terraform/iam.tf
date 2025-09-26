@@ -1,11 +1,3 @@
-resource "aws_ecs_cluster" "ECS" {
-  name = "sairam-ECS"
-
-  tags = {
-    Name = "sairam-ECS"
-  }
-}
-[root@ip-172-31-37-214 terraform]# cat iam.tf.bak
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "sairam-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
