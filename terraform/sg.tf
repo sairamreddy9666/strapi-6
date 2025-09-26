@@ -1,5 +1,5 @@
 resource "aws_security_group" "SG" {
-  name        = "SG"
+  name        = "sairam-SG"
   description = "Allow all traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -18,6 +18,6 @@ resource "aws_security_group" "SG" {
   }
 
   tags = {
-    Name = "SG"
+    Name = "sairam-SG"
   }
 }
