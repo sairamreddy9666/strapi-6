@@ -33,6 +33,7 @@ jobs:
 
       - name: Terraform Destroy
         working-directory: ./terraform
-        run: terraform destroy -auto-approve \
+        run: |
+          terraform destroy -auto-approve \
           -var "image_uri=${{ secrets.ECR_REPOSITORY }}" \
           -var "db_password=${{ secrets.POSTGRES_PASSWORD }}"
