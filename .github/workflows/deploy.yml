@@ -42,3 +42,7 @@ jobs:
             -var "image_uri=${{ secrets.ECR_REPOSITORY }}" \
             -var "db_password=${{ secrets.POSTGRES_PASSWORD }}"
 
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
+
