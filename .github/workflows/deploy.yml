@@ -37,10 +37,8 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./terraform
-        run: terraform plan -out=tfplan -input=false \
-          -var "image_uri=${{ secrets.ECR_REPOSITORY }}" \
-          -var "db_password=${{ secrets.DB_PASSWORD }}"
+        run: |
+          terraform plan -out=tfplan -input=false \
+            -var "image_uri=${{ secrets.ECR_REPOSITORY }}" \
+            -var "db_password=${{ secrets.DB_PASSWORD }}"
 
-      - name: Terraform Apply
-        working-directory: ./terraform
-        run: terraform apply -auto-approve tfplan
