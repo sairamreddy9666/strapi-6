@@ -40,5 +40,5 @@ jobs:
         run: |
           terraform plan -out=tfplan -input=false \
             -var "image_uri=${{ secrets.ECR_REPOSITORY }}" \
-            -var "db_password=${{ secrets.DB_PASSWORD }}"
+            -var "db_password=${{ secrets.POSTGRES_PASSWORD }}"
 
